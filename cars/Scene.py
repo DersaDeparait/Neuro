@@ -1,9 +1,8 @@
-import pygame
 from pygame import time
-from pygame import rect
+import pygame
 import random
-import math
 import os
+import config
 from cars.Beast import Beast
 from cars.Lazer_of_death import Lazer_of_death
 from cars.neuro import Neuro
@@ -30,7 +29,7 @@ class Scene:
         self.clock = time.Clock()
     def init_common(self):
         self.counter = -1
-        self.fps_default = 120
+        self.fps_default = config.FPS
         self.camera_move = [2, 0]
     def init_battlefield(self):
         self.floor = 100
