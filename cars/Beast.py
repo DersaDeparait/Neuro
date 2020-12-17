@@ -37,14 +37,14 @@ class Beast:
         self.only_circle = only_circle
 
     def update(self, camera_move = None):
-        if (self.life):
+        if self.life:
             self.angle += self.angle_speed
             self.angle_speed += self.angle_acceleration
             self.angle_speed *= 0.98
             self.angle_acceleration = 0
 
-            if (self.position[1]+self.speed[1]+self.size>=self.ceiling): self.speed[1] = -abs(self.speed[1])
-            if (self.position[1]+self.speed[1]-self.size<=self.floor): self.speed[1] = abs(self.speed[1])
+            if self.position[1]+self.speed[1]+self.size>=self.ceiling: self.speed[1] = -abs(self.speed[1])
+            if self.position[1]+self.speed[1]-self.size<=self.floor: self.speed[1] = abs(self.speed[1])
 
             for i in range(len(self.position)):
                 self.position[i] = self.position[i] + self.speed[i]
@@ -52,7 +52,7 @@ class Beast:
                 self.speed[i] *= 0.993
                 self.acceleration[i] = 0
 
-        if (camera_move != None and len(camera_move) == 2):
+        if camera_move != None and len(camera_move) == 2:
             self.position[0] -= camera_move[0]
             self.position[1] -= camera_move[1]
 
@@ -60,7 +60,7 @@ class Beast:
         if self.only_circle:
             pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size))
         else:
-            if (self.life):
+            if self.life:
                 pygame.draw.circle(display, self.color_big, [int(self.position[0]), int(self.position[1])], int(self.size))
                 if self.size_small > 0: pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size_small))
                 pygame.draw.circle(display, self.color_eye, [int(self.position[0] + self.offset_eye * math.cos(self.angle)), int(self.position[1] + self.offset_eye * math.sin(self.angle))], int(self.size_eye))
