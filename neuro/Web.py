@@ -1,7 +1,8 @@
 import random
 
 class Web:
-    def __init__(self, layers = [4, 4], web = None):
+    def __init__(self, layers = [4, 4], web = None, randomize = None):
+        self.layers = layers
         self.activation_function = lambda number: number
         if web != None:
             self.neurons = [[web.neurons[i][j] for j in range(layers[i])] for i in range(len(layers))]
@@ -9,11 +10,15 @@ class Web:
         else:
             self.neurons = [[0 for j in range(layers[i])] for i in range(len(layers))]
             self.axon_weigh = [[0 for j in range(layers[i] * layers[i + 1])] for i in range(len(layers) - 1)]
+        if randomize != None: self.randomize(randomize)
 
     def randomize(self, size = 0.01):
         for i in range(len(self.axon_weigh)):
             for j in range(len(self.axon_weigh[i])):
                 self.axon_weigh[i][j] += random.uniform(-size, size)
+
+    def new_randomize_deep_copy(self, size = 0.1):
+        return Web(self.layers, web = self, randomize= size)
 
     def set_function(self, activation_function):
         self.activation_function = activation_function
