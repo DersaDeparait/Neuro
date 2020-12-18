@@ -43,5 +43,5 @@ class Neuro:
                 to_return.append(False)
         return to_return
 
-    def _activation(self, number):
-        return math.tanh(number)
+    def _activation(self, number): return self._activation_tanh(number)
+    def _activation_tanh(self, number): return math.tanh(number)
