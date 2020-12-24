@@ -30,8 +30,6 @@ class Web:
     def set_input(self, input):
         for i in range(len(self.neurons[0])):
             self.neurons[0][i] = input[i]
-    def get_output(self):
-        return self.neurons[-1]
     def calculate(self):
         for i in range(1, len(self.neurons)):
             for j in range(len(self.neurons[i])):
@@ -39,3 +37,5 @@ class Web:
                 for k in range(len(self.neurons[i - 1])):
                     sum += self.axon_weigh[i - 1][k * len(self.neurons[i]) + j] * self.neurons[i - 1][k]
                 self.neurons[i][j] = self.activation_function(sum)
+    def get_output(self):
+        return self.neurons[-1]

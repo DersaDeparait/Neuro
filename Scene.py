@@ -36,6 +36,7 @@ class Scene:
     def init_battlefield(self): pass
     def init_character(self): pass
 
+
     def loop(self):
         while (self.run_epoch):
             self.evolution_operation()
@@ -59,6 +60,7 @@ class Scene:
     def exit_epoch(self):
         if self.epoch >=self.max_epoch:
             self.run_epoch = False
+
 
     def count_counter(self):
         self.iteration += 1
