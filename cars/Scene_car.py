@@ -18,7 +18,7 @@ class Scene_car(Scene):
 
         self.lazer_of_death = [Lazer_of_death(50), Lazer_of_death(self.display_size[0] - 50)]
 
-        self.enemies_number = 10
+        self.enemies_number = 20
         self.enemies = []
         for i in range(self.enemies_number):
             self.enemies.append(
@@ -35,6 +35,8 @@ class Scene_car(Scene):
             self.beast.append(Beast([self.ball_position_default[0], self.ball_position_default[1]],
                                     self.floor, self.ceiling, neuro = Web([5, 4], randomize = 0.1)))
         self.number_of_life = 0
+        self.beast[-1].color = (0,0,0)
+        self.beast[-2].color = (0,120,120)
 
 
     def evolution_operation(self):
@@ -52,6 +54,8 @@ class Scene_car(Scene):
                 neuro = random.choice(life_beast).neuro.new_randomize_deep_copy()
                 self.beast[i].set_params([self.ball_position_default[0], self.ball_position_default[1]],
                                     self.floor, self.ceiling, neuro=neuro)
+        self.beast[-1].color = (0, 0, 0)
+        self.beast[-2].color = (0, 120, 120)
 
 
     def rule(self):
@@ -89,8 +93,8 @@ class Scene_car(Scene):
             self.beast[i].update(self.camera_move)
             if self.beast[i].life : self.number_of_life += 1
     def __update_display(self):
-        pygame.display.set_caption("Кількість живих: {0:5}, Ітерація:{1:5} Епоха:{2:5} // Фітнес результат 0:{3:5} 1:{4:5}"
-                                   .format(self.number_of_life, self.iteration, self.epoch, self.beast[0].fitnes_result, self.beast[1].fitnes_result))
+        pygame.display.set_caption("Кількість живих: {0:5}, Ітерація:{1:5} Епоха:{2:5} // Фітнес результат -1: {3:5.2f}   -2: {4:5.2f}"
+                                   .format(self.number_of_life, self.iteration, self.epoch, self.beast[-1].fintes_last, self.beast[-2].fintes_last))
 
 
     def exit_iteration(self):

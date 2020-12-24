@@ -40,6 +40,7 @@ class Beast:
         self.neuro = neuro
 
         self.life_time = 0
+        self.fintes_last = 0
         self.fitnes_sum = 0
         self.fitnes_result = 0
 
@@ -71,21 +72,32 @@ class Beast:
         if self.position[1] + self.speed[1] + self.size >= self.ceiling: self.__die()
         if self.position[1] + self.speed[1] - self.size <= self.floor: self.__die()
 
-        # for i in range(len(enemies)):
-        #     if math.sqrt((enemies[i].position[0] - self.position[0])**2 +
-        #             (enemies[i].position[1] - self.position[1])**2) < self.size + enemies[i].size :
-        #         self.__die()
+        for i in range(len(enemies)):
+            if math.sqrt((enemies[i].position[0] - self.position[0])**2 +
+                    (enemies[i].position[1] - self.position[1])**2) < self.size + enemies[i].size :
+                self.__die()
     def __die(self): self.life = False
 
     def update_fitnes_result(self, lazer_of_death, enemies):
         if self.life:
             self.life_time += 1
-            to_add = min(abs(self.position[0] - lazer_of_death[0].position),
-                         abs(self.position[0] - lazer_of_death[1].position),
+            self.fintes_last = min(abs(self.position[0] - lazer_of_death[0].position),
+                         abs(self.position[0] - lazer_of_death[1].position)) # todo + self.size
+
+            self.fintes_last = min(self.fintes_last,
                          abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
                          abs(self.position[1] + self.speed[1] - self.size - self.floor))
-            self.fitnes_sum += to_add
-            self.fitnes_result += self.fitnes_sum / self.life_time
+
+            min_dist = math.sqrt((enemies[0].position[0] - self.position[0])**2 +(enemies[0].position[1] - self.position[1])**2) - self.size - enemies[0].size
+            for i in range(1, len(enemies)):
+                dist = math.sqrt((enemies[i].position[0] - self.position[0])**2 +(enemies[i].position[1] - self.position[1])**2) - self.size - enemies[i].size
+                if dist < min_dist:
+                    min_dist = dist
+            self.fintes_last = min(self.fintes_last, min_dist)
+            self.fintes_last = min_dist
+
+            self.fitnes_sum += self.fintes_last
+            self.fitnes_result = self.fitnes_sum / self.life_time
     def update(self, camera_move = None):
         if self.life:
             self.angle += self.angle_speed
