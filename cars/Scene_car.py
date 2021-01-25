@@ -4,7 +4,7 @@ import config
 from Scene import Scene
 from cars.Beast import Beast
 from cars.Lazer_of_death import Lazer_of_death
-from neuro.Web import Web
+from web import Web
 
 class Scene_car(Scene):
     def __init__(self):
@@ -105,7 +105,7 @@ class Scene_car(Scene):
         self.run_iteration = False
 
 
-    def draw_all(self):
+    def __draw_all(self):
         self.draw_enemies()
         self.draw_characters()
         self.draw_frame()
