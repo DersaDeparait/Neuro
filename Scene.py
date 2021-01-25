@@ -1,6 +1,5 @@
 from pygame import time
 import pygame
-import random
 import os
 import config
 
