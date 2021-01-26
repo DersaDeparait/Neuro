@@ -3,9 +3,9 @@ import pygame
 import math
 
 class Beast:
-    def __init__(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False, neuro = None):
-        self.set_params(position, floor, ceiling, speed, size, color ,only_circle, neuro)
-    def set_params(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False, neuro = None):
+    def __init__(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
+        self.set_params(position, floor, ceiling, speed, size, color ,only_circle)
+    def set_params(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
         self.position = [position[0], position[1]]
 
         self.floor = floor
@@ -37,16 +37,11 @@ class Beast:
         self.life = True
         self.only_circle = only_circle
 
-        self.neuro = neuro
-
         self.life_time = 0
-        self.fintes_last = 0
-        self.fitnes_sum = 0
-        self.fitnes_result = 0
 
 
-    def calculate_move(self, distance):
-        result = self.neuro.calculate_all([self.angle, *distance])
+    def calculate_move(self, neuro, distance):
+        result = neuro.calculate_all([self.angle, *distance])
         result = self.__convert_to_bool(result)
         self.__rule(*result)
     def __convert_to_bool(self, result):
@@ -65,39 +60,44 @@ class Beast:
             self.acceleration[1] -= self.rule_acceleration_back * math.sin(self.angle)
 
 
-    def possible_to_die(self, lazer_of_death, enemies):
+    def possible_to_die_from_frame(self, lazer_of_death):
         if self.position[0] < lazer_of_death[0].position: self.__die()
         if self.position[0] > lazer_of_death[1].position: self.__die()
 
         if self.position[1] + self.speed[1] + self.size >= self.ceiling: self.__die()
         if self.position[1] + self.speed[1] - self.size <= self.floor: self.__die()
-
+    def possible_to_die_from_enemies(self, enemies):
         for i in range(len(enemies)):
             if math.sqrt((enemies[i].position[0] - self.position[0])**2 +
                     (enemies[i].position[1] - self.position[1])**2) < self.size + enemies[i].size :
                 self.__die()
     def __die(self): self.life = False
 
-    def update_fitnes_result(self, lazer_of_death, enemies):
+    def get_life_time(self): return self.life_time
+
+    def update_life_time(self):
         if self.life:
             self.life_time += 1
-            self.fintes_last = min(abs(self.position[0] - lazer_of_death[0].position),
+    def update_fitnes_walls(self, lazer_of_death):
+        fitnes_result = 0
+        if self.life:
+            fitnes_result = min(abs(self.position[0] - lazer_of_death[0].position),
                          abs(self.position[0] - lazer_of_death[1].position)) # todo + self.size
 
-            self.fintes_last = min(self.fintes_last,
+            fitnes_result = min(fitnes_result,
                          abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
                          abs(self.position[1] + self.speed[1] - self.size - self.floor))
-
+        return fitnes_result
+    def update_fitnes_enemies(self, enemies):
+        fitnes_result = 0
+        if self.life:
             min_dist = math.sqrt((enemies[0].position[0] - self.position[0])**2 +(enemies[0].position[1] - self.position[1])**2) - self.size - enemies[0].size
             for i in range(1, len(enemies)):
                 dist = math.sqrt((enemies[i].position[0] - self.position[0])**2 +(enemies[i].position[1] - self.position[1])**2) - self.size - enemies[i].size
                 if dist < min_dist:
                     min_dist = dist
-            self.fintes_last = min(self.fintes_last, min_dist)
-            self.fintes_last = min_dist
-
-            self.fitnes_sum += self.fintes_last
-            self.fitnes_result = self.fitnes_sum / self.life_time
+            fitnes_result = min_dist
+        return fitnes_result
     def update(self, camera_move = None):
         if self.life:
             self.angle += self.angle_speed

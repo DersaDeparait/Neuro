@@ -35,7 +35,7 @@ class Character:
 
 
     @staticmethod
-    def calculate_all():
+    def calculate_end_epoch():
         Character.__calculate_max()
         Character.__make_parents()
         Character.__make_who_not_die()
