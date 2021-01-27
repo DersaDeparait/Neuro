@@ -22,10 +22,10 @@ class Web:
         if type(o) == Web:
             for i in range(len(self.axon_weigh)):
                 for j in range(len(self.axon_weigh[i])):
-                    if self.axon_weigh[i][j] != o.axon_weigh[i][j]:
+                    if abs(self.axon_weigh[i][j] - o.axon_weigh[i][j]) > 0.01:
                         return False
             for i in range(len(self.axon_bias)):
-                if self.axon_bias[i] != o.axon_bias[i]:
+                if abs(self.axon_bias[i] - o.axon_bias[i]) > 0.01:
                     return False
             return True
 

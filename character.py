@@ -84,7 +84,7 @@ class Character:
             Character.web_mother.append(Character.characters_all[index_mother[i]].web)
     @staticmethod
     def _make_parents_roulette_not_unique():
-        sum_value = 0
+        sum_value = 1
         for i in range(len(Character.characters_all)):
             sum_value += Character.characters_all[i].fitnes
 

@@ -2,6 +2,8 @@ from character import Character
 from cars.Beast import Beast
 from web import Web
 import random
+import config
+import math
 
 class Character_beast(Character):
     def __init__(self, person = None, web = None):
@@ -10,7 +12,7 @@ class Character_beast(Character):
         if Character_beast.iterator == 999: person.color = [0, 255, 0]
         if Character_beast.iterator == 1000: person.color = [255, 0, 0]
 
-    def calculate_move(self, lazer_of_death, ceiling, floor):
+    def calculate_move(self, lazer_of_death, ceiling, floor, enemies):
         lazer_distance = lazer_of_death[1].position - lazer_of_death[0].position
         distance_to_left_lazer_normed = (self.person.position[0] - lazer_of_death[0].position) / lazer_distance
         distance_to_right_lazer_normed = (lazer_of_death[1].position - self.person.position[0]) / lazer_distance
@@ -18,16 +20,38 @@ class Character_beast(Character):
         distance_to_up_wall_normed = (ceiling - self.person.position[1]) / wall_distance
         distance_to_down_wall_normed = (self.person.position[1] - floor) / wall_distance
 
+
+
+
+        enemies_distances = {}
+        for i in range(len(enemies)):
+            enemies_distances[math.sqrt((self.person.position[0] - enemies[i].position[0] - enemies[i].size)**2 +
+                     (self.person.position[1] - enemies[i].position[1] - enemies[i].size)**2)] = i
+
+        keys = sorted(enemies_distances)
+        enem_dis_and_angle = []
+        for i in range(config.CAR_COUNT_OF_IMPORTANT_ENEMIES_TO_NEURO):
+            this_key = enemies_distances[keys[-i]]
+            enem_dis_and_angle.append( math.sqrt((self.person.position[0] - enemies[this_key].position[0] - enemies[i].size)**2 +
+                         (self.person.position[1] - enemies[this_key].position[1] - enemies[i].size)**2)
+                        / lazer_distance)
+            enem_dis_and_angle.append(math.atan2(self.person.position[1] - enemies[this_key].position[1],
+                                   self.person.position[0] - enemies[this_key].position[0]))
+
+
+
         self.person.calculate_move(self.web, [distance_to_left_lazer_normed,
                                       distance_to_right_lazer_normed,
                                       distance_to_up_wall_normed,
-                                      distance_to_down_wall_normed])
+                                      distance_to_down_wall_normed,
+                                      *enem_dis_and_angle
+                                              ])
     def update(self, camera_move, lazer_of_death, enemies):
         self.person.possible_to_die_from_frame(lazer_of_death)
-        # self.person.possible_to_die_from_enemies(enemies)
+        self.person.possible_to_die_from_enemies(enemies)
         self.person.update_life_time()
-        self.fitnes += self.person.update_fitnes_walls(lazer_of_death)
-        # self.fitnes += self.person.update_fitnes_enemies(enemies)
+        self.fitnes += self.person.update_fitnes_walls(lazer_of_death) * config.CAR_HOW_MANY_COST_BE_IN_MIDDLE
+        self.fitnes += self.person.update_fitnes_enemies(enemies) * config.CAR_HOW_MANY_COST_BE_FAR_FROM_ENEMIES
         self.person.update(camera_move)
     def draw(self, display):
         self.person.draw(display)
@@ -45,7 +69,7 @@ class Character_beast(Character):
 
     def epoch_done(self):
         if self.person.life:
-            self.fitnes += 10000
+            self.fitnes += config.CAR_HOW_MANY_COST_ALIVE
 
     @staticmethod
     def calculate_end_epoch_custom():

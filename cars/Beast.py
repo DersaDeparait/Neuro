@@ -106,7 +106,7 @@ class Beast:
         #     fitnes_result = min(fitnes_result,
         #                  abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
         #                  abs(self.position[1] + self.speed[1] - self.size - self.floor))
-        return fitnes_result * fitnes_result / 100 / 100
+        return fitnes_result * fitnes_result
     def update_fitnes_enemies(self, enemies):
         fitnes_result = 0
         if self.life:

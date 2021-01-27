@@ -4,7 +4,6 @@ import config
 from Scene import Scene
 from cars.Beast import Beast
 from cars.Lazer_of_death import Lazer_of_death
-from web import Web
 from cars.character_beast import Character_beast
 
 class Scene_car(Scene):
@@ -24,7 +23,7 @@ class Scene_car(Scene):
         self.enemies = []
         for i in range(self.enemies_number):
             self.enemies.append(
-                Beast(position=[i * 300 + random.randrange(0, 500), random.randrange(self.floor, self.ceiling)],
+                Beast(position=[1000 + i * 300 + random.randrange(0, 500), random.randrange(self.floor, self.ceiling)],
                       size=random.randrange(50, 200), only_circle=True,
                       color=[random.randrange(1,100), random.randrange(100, 255), random.randrange(255)]))
     def init_character(self):
@@ -44,7 +43,7 @@ class Scene_car(Scene):
 
     def rule(self):
         for i in range(len(self.character)):
-            self.character[i].calculate_move(self.lazer_of_death, self.ceiling, self.floor)
+            self.character[i].calculate_move(self.lazer_of_death, self.ceiling, self.floor, self.enemies)
     def update(self):
         self.__update_enemies()
         self.__update_lazer_of_death()
@@ -55,7 +54,9 @@ class Scene_car(Scene):
             self.enemies[i].update(self.camera_move)
             if self.enemies[i].position[0] + self.enemies[i].size < 0:
                 self.enemies[i].position = [2000 + i * 300 + random.randrange(0, 500) + self.camera_move[0], random.randrange(self.floor, self.ceiling)]
-                self.enemies[i].color=[random.randrange(1,100), random.randrange(100, 255), random.randrange(255)]
+                self.enemies[i].size = random.randint(20, 150)
+                self.enemies[i].color=[random.randrange(128,256), random.randrange(0, 155), random.randrange(0, 125)]
+                # self.enemies[i].color=[random.randrange(1,100), random.randrange(100, 255), random.randrange(255)]
     def __update_lazer_of_death(self):
         for i in range(len(self.lazer_of_death)):
             self.lazer_of_death[i].update()
@@ -82,10 +83,18 @@ class Scene_car(Scene):
 
 
     def evolution_operation(self):
+        for i in range(len(self.enemies)):
+            self.enemies[i].update(self.camera_move)
+            if self.enemies[i].position[0] + self.enemies[i].size < 1500:
+                self.enemies[i].position = [2000 + i * 300 + random.randrange(0, 500) + self.camera_move[0], random.randrange(self.floor, self.ceiling)]
+                self.enemies[i].size = random.randint(20, 150)
+
         for i in range(len(self.character)):
             self.character[i].epoch_done()
         Scene_car.alive.append(Character_beast.how_many_alive())
         Character_beast.calculate_end_epoch_custom()
+
+
 
 
     def _draw_all(self):
