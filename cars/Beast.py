@@ -39,11 +39,18 @@ class Beast:
 
         self.life_time = 0
 
+        self.reset_position_value = [position[0], position[1]]
+        self.reset_floor = floor
+        self.reset_ceiling = ceiling
+
+        self.dead_show_counter_standart = 25
+        self.dead_show_counter = 25
 
     def calculate_move(self, neuro, distance):
-        result = neuro.calculate_all([self.angle, *distance])
-        result = self.__convert_to_bool(result)
-        self.__rule(*result)
+        if self.life:
+            result = neuro.calculate_all([self.angle, *distance])
+            result = self.__convert_to_bool(result)
+            self.__rule(*result)
     def __convert_to_bool(self, result):
         for i in range(len(result)):
             if result[i] > 0: result[i] = True
@@ -61,16 +68,18 @@ class Beast:
 
 
     def possible_to_die_from_frame(self, lazer_of_death):
-        if self.position[0] < lazer_of_death[0].position: self.__die()
-        if self.position[0] > lazer_of_death[1].position: self.__die()
+        if self.life:
+            if self.position[0] + self.speed[0] - self.size <= lazer_of_death[0].position: self.__die()
+            if self.position[0] + self.speed[0] + self.size >= lazer_of_death[1].position: self.__die()
 
-        if self.position[1] + self.speed[1] + self.size >= self.ceiling: self.__die()
-        if self.position[1] + self.speed[1] - self.size <= self.floor: self.__die()
+            if self.position[1] + self.speed[1] + self.size >= self.ceiling: self.__die()
+            if self.position[1] + self.speed[1] - self.size <= self.floor: self.__die()
     def possible_to_die_from_enemies(self, enemies):
-        for i in range(len(enemies)):
-            if math.sqrt((enemies[i].position[0] - self.position[0])**2 +
-                    (enemies[i].position[1] - self.position[1])**2) < self.size + enemies[i].size :
-                self.__die()
+        if self.life:
+            for i in range(len(enemies)):
+                if math.sqrt((enemies[i].position[0] - self.position[0])**2 +
+                        (enemies[i].position[1] - self.position[1])**2) < self.size + enemies[i].size :
+                    self.__die()
     def __die(self): self.life = False
 
     def get_life_time(self): return self.life_time
@@ -78,6 +87,9 @@ class Beast:
     def update_life_time(self):
         if self.life:
             self.life_time += 1
+            self.dead_show_counter = self.dead_show_counter_standart
+        else:
+            self.dead_show_counter -= 1
     def update_fitnes_walls(self, lazer_of_death):
         fitnes_result = 0
         if self.life:
@@ -87,7 +99,14 @@ class Beast:
             fitnes_result = min(fitnes_result,
                          abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
                          abs(self.position[1] + self.speed[1] - self.size - self.floor))
-        return fitnes_result
+        # if self.life:
+        #     fitnes_result = min(abs(self.position[0] - lazer_of_death[0].position),
+        #                  abs(self.position[0] - lazer_of_death[1].position)) # todo + self.size
+        #
+        #     fitnes_result = min(fitnes_result,
+        #                  abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
+        #                  abs(self.position[1] + self.speed[1] - self.size - self.floor))
+        return fitnes_result * fitnes_result / 100 / 100
     def update_fitnes_enemies(self, enemies):
         fitnes_result = 0
         if self.life:
@@ -118,16 +137,19 @@ class Beast:
             self.position[0] -= camera_move[0]
             self.position[1] -= camera_move[1]
 
-
     def draw(self, display):
-        if self.only_circle:
-            pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size))
-        else:
-            if self.life:
-                pygame.draw.circle(display, self.color_big, [int(self.position[0]), int(self.position[1])], int(self.size))
-                if self.size_small > 0: pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size_small))
-                pygame.draw.circle(display, self.color_eye, [int(self.position[0] + self.offset_eye * math.cos(self.angle)), int(self.position[1] + self.offset_eye * math.sin(self.angle))], int(self.size_eye))
+        if self.dead_show_counter > 0:
+            if self.only_circle:
+                pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size))
             else:
-                pygame.draw.circle(display, self.color_dead_big, [int(self.position[0]), int(self.position[1])], int(self.size))
-                if self.size_small > 0: pygame.draw.circle(display, self.color_dead, [int(self.position[0]), int(self.position[1])], int(self.size_small))
-                pygame.draw.circle(display, self.color_dead_eye, [int(self.position[0] + self.offset_eye * math.cos(self.angle)), int(self.position[1] + self.offset_eye * math.sin(self.angle))], int(self.size_eye))
+                if self.life:
+                    pygame.draw.circle(display, self.color_big, [int(self.position[0]), int(self.position[1])], int(self.size))
+                    if self.size_small > 0: pygame.draw.circle(display, self.color, [int(self.position[0]), int(self.position[1])], int(self.size_small))
+                    pygame.draw.circle(display, self.color_eye, [int(self.position[0] + self.offset_eye * math.cos(self.angle)), int(self.position[1] + self.offset_eye * math.sin(self.angle))], int(self.size_eye))
+                else:
+                    pygame.draw.circle(display, self.color_dead_big, [int(self.position[0]), int(self.position[1])], int(self.size))
+                    if self.size_small > 0: pygame.draw.circle(display, self.color_dead, [int(self.position[0]), int(self.position[1])], int(self.size_small))
+                    pygame.draw.circle(display, self.color_dead_eye, [int(self.position[0] + self.offset_eye * math.cos(self.angle)), int(self.position[1] + self.offset_eye * math.sin(self.angle))], int(self.size_eye))
+
+    def reset_position(self):
+        self.set_params(self.reset_position_value, self.reset_floor, self.reset_ceiling)

@@ -18,10 +18,24 @@ class Web:
             self.axon_bias = [0 for i in range(len(self.layers) - 1)]
         if randomize != None: self.randomize(randomize)
 
+    def __eq__(self, o: object) -> bool:
+        if type(o) == Web:
+            for i in range(len(self.axon_weigh)):
+                for j in range(len(self.axon_weigh[i])):
+                    if self.axon_weigh[i][j] != o.axon_weigh[i][j]:
+                        return False
+            for i in range(len(self.axon_bias)):
+                if self.axon_bias[i] != o.axon_bias[i]:
+                    return False
+            return True
+
+
     def randomize(self, size = 0.01):
         for i in range(len(self.axon_weigh)):
             for j in range(len(self.axon_weigh[i])):
                 self.axon_weigh[i][j] += random.uniform(-size, size)
+        for i in range(len(self.axon_bias)):
+            self.axon_bias[i] += random.uniform(-size, size)
     def make_mutation(self, percent = config.MUTATION_POWER, power = 1.):
         dispers = 0 + (sum(self.axon_bias))
         counter = 0 + len(self.axon_bias)
@@ -76,10 +90,11 @@ class Web:
                     new_neuro.axon_bias[i] = neuro_1.axon_bias[i]
                 counter += 1
         return new_neuro
-    def cross_crossover_several(self, neuro_1, point_number : int = 2):
+    def cross_crossover_several(self, neuro_1, point_number : int = 2, return_couple = False):
         if point_number < 1: point_number = 1
 
         new_neuro = Web(web = self)
+        new_neuro_2 = Web(web = neuro_1)
         sum = 0
         for i in range(len(new_neuro.axon_weigh)):
             for j in range(len(new_neuro.axon_weigh[i])):
@@ -104,15 +119,17 @@ class Web:
                     start_parent = not start_parent
                     points.pop(0)
                 if start_parent:
+                    new_neuro_2.axon_weigh[i][j] = self.axon_weigh[i][j]
                     new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
                 counter += 1
             if len(points) > 0 and counter > points[0]:
                 start_parent = not start_parent
                 points.pop(0)
             if start_parent:
+                new_neuro_2.axon_bias[i] = self.axon_bias[i]
                 new_neuro.axon_bias[i] = neuro_1.axon_bias[i]
             counter += 1
-        return new_neuro
+        return [new_neuro, new_neuro_2] if return_couple else [new_neuro]
     def cross_crossover_multi_several(self, neuro, point_number : int = 3, random_sequence:bool = True):
         if point_number < 1: point_number = 1
 

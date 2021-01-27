@@ -6,6 +6,9 @@ import random
 class Character_beast(Character):
     def __init__(self, person = None, web = None):
         super().__init__(person, web)
+        if Character_beast.iterator == 998: person.color = [0, 0, 255]
+        if Character_beast.iterator == 999: person.color = [0, 255, 0]
+        if Character_beast.iterator == 1000: person.color = [255, 0, 0]
 
     def calculate_move(self, lazer_of_death, ceiling, floor):
         lazer_distance = lazer_of_death[1].position - lazer_of_death[0].position
@@ -24,7 +27,7 @@ class Character_beast(Character):
         # self.person.possible_to_die_from_enemies(enemies)
         self.person.update_life_time()
         self.fitnes += self.person.update_fitnes_walls(lazer_of_death)
-        self.fitnes += self.person.update_fitnes_enemies(enemies)
+        # self.fitnes += self.person.update_fitnes_enemies(enemies)
         self.person.update(camera_move)
     def draw(self, display):
         self.person.draw(display)
@@ -40,12 +43,19 @@ class Character_beast(Character):
 
 
 
-    def set_web(self): super().set_web()
-    def iteration_done(self): super().iteration_done()
-    def epoch_done(self): super().epoch_done()
+    def epoch_done(self):
+        if self.person.life:
+            self.fitnes += 10000
 
     @staticmethod
-    def calculate_end_epoch_0(ball_position_default, floor, ceiling):
+    def calculate_end_epoch_custom():
+        Character_beast.wayOfLife_simple_crossover()
+        # super().calculate_end_epoch()
+        Character_beast._reset_position()
+        Character_beast._remake_the_same()
+
+    @staticmethod
+    def wayOfLife_copy_neuro_from_random_alive_to_dead():
         life_beast = []
         for i in range(len(Character_beast.characters_all)):
             if Character_beast.characters_all[i].person.life:
@@ -58,6 +68,33 @@ class Character_beast(Character):
         for i in range(len(Character_beast.characters_all)):
             if not Character_beast.characters_all[i].person.life:
                 Character_beast.characters_all[i].web = random.choice(life_beast).web.new_randomize_deep_copy()
-                Character_beast.characters_all[i].person.set_params([ball_position_default[0], ball_position_default[1]], floor, ceiling)
 
-        # super().calculate_end_epoch()
+    @staticmethod
+    def wayOfLife_copy_neuro_from_best_to_dead():
+        life_beast = Character_beast.characters_all[0]
+        for i in range(1, len(Character_beast.characters_all)):
+            if Character_beast.characters_all[i].fitnes > life_beast.fitnes:
+                life_beast = Character_beast.characters_all[i]
+
+        for i in range(len(Character_beast.characters_all)):
+            if not Character_beast.characters_all[i].person.life:
+                Character_beast.characters_all[i].web = life_beast.web.new_randomize_deep_copy()
+
+    @staticmethod
+    def wayOfLife_copy_neuro_from_best_to_all():
+        life_beast = 0
+        for i in range(1, len(Character_beast.characters_all)):
+            if Character_beast.characters_all[i].fitnes > Character_beast.characters_all[life_beast].fitnes:
+                life_beast = i
+
+        web = Character_beast.characters_all[life_beast].web.new_randomize_deep_copy(size = 0)
+
+        for i in range(len(Character_beast.characters_all)):
+            Character_beast.characters_all[i].web = web.new_randomize_deep_copy()
+
+    @staticmethod
+    def wayOfLife_simple_crossover():
+        Character_beast._make_parents_roulette_not_unique()
+        Character_beast._make_who_not_die()
+        Character_beast._make_new_population()
+        Character_beast._make_mutation()

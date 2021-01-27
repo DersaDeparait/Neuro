@@ -8,6 +8,7 @@ from web import Web
 from cars.character_beast import Character_beast
 
 class Scene_car(Scene):
+    alive = []
     def __init__(self):
         super().__init__()
 
@@ -63,10 +64,14 @@ class Scene_car(Scene):
             self.character[i].update(self.camera_move, self.lazer_of_death, self.enemies)
         self.number_of_life = Character_beast.how_many_alive()
     def __update_display(self):
-        pygame.display.set_caption("Кількість живих: {0:5}, Ітерація:{1:5} Епоха:{2:5}"# // Фітнес результат -1: {3:5.2f}   -2: {4:5.2f}, {5}, {6}"
+        pygame.display.set_caption("Жив:{0:4}/{1}, Ітер:{2:5} Еп:{3:5} | Alive:"#// Фітнес результат -1: {3:5.2f} "#  -2: {4:5.2f}, {5}, {6}"
                                    .format(self.number_of_life,
+                                           config.START_POPULATION,
                                            self.iteration,
-                                           self.epoch))
+                                           self.epoch,
+                                           # self.character[999].person.update_fitnes_walls(lazer_of_death=self.lazer_of_death)
+                                           )
+                                   + str(Scene_car.alive))
 
 
     def exit_iteration(self):
@@ -77,7 +82,10 @@ class Scene_car(Scene):
 
 
     def evolution_operation(self):
-        Character_beast.calculate_end_epoch_0(self.ball_position_default, self.floor, self.ceiling)
+        for i in range(len(self.character)):
+            self.character[i].epoch_done()
+        Scene_car.alive.append(Character_beast.how_many_alive())
+        Character_beast.calculate_end_epoch_custom()
 
 
     def _draw_all(self):
@@ -90,7 +98,8 @@ class Scene_car(Scene):
             self.enemies[i].draw(self.display)
     def draw_characters(self):
         for i in range(len(self.character)):
-            self.character[i].draw(self.display)
+            if i % 1==0:
+                self.character[i].draw(self.display)
     def draw_frame(self, frame_size = 4, color = [255, 0, 255]):
         pygame.draw.line(self.display, color, [-1000 - self.camera_move[0], self.floor - self.camera_move[1]], [self.display_size[0] * 1000 - self.camera_move[0], self.floor - self.camera_move[1]], frame_size)
         pygame.draw.line(self.display, color, [-1000 - self.camera_move[0], self.ceiling - self.camera_move[1]], [self.display_size[0] * 1000 - self.camera_move[0], self.ceiling - self.camera_move[1]], frame_size)
