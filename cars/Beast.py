@@ -48,7 +48,8 @@ class Beast:
 
     def calculate_move(self, neuro, distance):
         if self.life:
-            result = neuro.calculate_all([self.angle, *distance])
+            y,x = math.sin(self.angle), math.cos(self.angle)
+            result = neuro.calculate_all([x, y , *distance])
             result = self.__convert_to_bool(result)
             self.__rule(*result)
     def __convert_to_bool(self, result):

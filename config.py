@@ -8,13 +8,13 @@ FPS = 240
 
 MAX_COUNTER = 3000 # Кількість циклів в 1 еопосі
 MAX_EPOCH = 1000 # Кількість епох
-START_POPULATION = 4000 # Кількість осіб взагалі
+START_POPULATION = 1000 # Кількість осіб взагалі
 
-COUNT_OF_ALIVE_AFTER_EPOCH = 50 # Кількість виживших пісял того як закінчився минулий раунд
-MUTATION_POWER = 0.001 # Ймовірність мутації гена межі [0 до 1]
+COUNT_OF_ALIVE_AFTER_EPOCH = 100 # Кількість виживших пісял того як закінчився минулий раунд
+MUTATION_POWER = 0.0025 # Ймовірність мутації гена межі [0 до 1]
 CROSSOVER_POINT_NUMBER = 2 # Кількість точко кросовера, зазвичай 1, можна до 10
 NUMBER_OF_PARENTS_COUPLES = START_POPULATION
-WEB_LAYERS = [13,4]#[5,4]#[5,6,4]
+WEB_LAYERS = [6+12,4]#[6,4]#[6,6,4]
 
 
 #----------------- CAR ------------------
@@ -25,11 +25,11 @@ CAR_CEILING_POSITION = 900
 CAR_LAZER_OF_DEATH_POSITION = 50
 CAR_LAZER_OF_DEATH_POSITION_REVERSE = 50
 
-CAR_ENEMIES_NUMBER = 10
+CAR_ENEMIES_NUMBER = 14
 CAR_COUNT_OF_IMPORTANT_ENEMIES_TO_NEURO = 4
 CAR_BALL_POSITION_DEFAULT = [800,500]
 
 CAR_HOW_MANY_COST_ALIVE = 10000
-CAR_HOW_MANY_COST_BE_IN_MIDDLE = 0.000025
+CAR_HOW_MANY_COST_BE_IN_MIDDLE = 0.0001
 CAR_HOW_MANY_COST_BE_FAR_FROM_ENEMIES = 0.0001
 #----------------------------------------

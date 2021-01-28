@@ -35,8 +35,13 @@ class Character_beast(Character):
             enem_dis_and_angle.append( math.sqrt((self.person.position[0] - enemies[this_key].position[0] - enemies[i].size)**2 +
                          (self.person.position[1] - enemies[this_key].position[1] - enemies[i].size)**2)
                         / lazer_distance)
-            enem_dis_and_angle.append(math.atan2(self.person.position[1] - enemies[this_key].position[1],
-                                   self.person.position[0] - enemies[this_key].position[0]))
+            angle = math.atan2(self.person.position[1] - enemies[this_key].position[1],
+                                   self.person.position[0] - enemies[this_key].position[0])
+            # angle -= self.person.angle
+            y = math.sin(angle)
+            x = math.cos(angle)
+            enem_dis_and_angle.append(y)
+            enem_dis_and_angle.append(x)
 
 
 

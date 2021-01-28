@@ -91,7 +91,10 @@ class Scene_car(Scene):
 
         for i in range(len(self.character)):
             self.character[i].epoch_done()
+
         Scene_car.alive.append(Character_beast.how_many_alive())
+        if len(Scene_car.alive) > 20: Scene_car.alive.pop(0)
+
         Character_beast.calculate_end_epoch_custom()
 
 
