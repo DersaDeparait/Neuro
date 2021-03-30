@@ -43,7 +43,6 @@ class Character:
         Character._make_mutation()
         Character._reset_position()
         Character._remake_the_same()
-
     @staticmethod
     def _calculate_max():
         Character.max = 0
@@ -51,7 +50,6 @@ class Character:
             if (Character.characters_all[i].fitnes
                     > Character.characters_all[Character.max].fitnes):
                 Character.max = i
-
     @staticmethod
     def _tournament(): pass
     @staticmethod
@@ -117,7 +115,6 @@ class Character:
 
         # print(index_father)
         # print(index_mother)
-
     @staticmethod
     def _make_who_not_die():
         index_all = []
@@ -132,7 +129,6 @@ class Character:
             Character.characters_web_temp.append(Character.characters_all[index].web)
             index_all.remove(index)
             fitnes_all.remove(Character.characters_all[index].fitnes)
-
     @staticmethod
     def _make_new_population():
         start = len(Character.characters_web_temp)
@@ -145,24 +141,21 @@ class Character:
 
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].web = Character.characters_web_temp[i]
-
     @staticmethod
     def _make_mutation():
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].web.make_mutation(config.MUTATION_POWER)
-
     @staticmethod
     def _reset_position():
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].person.reset_position()
             Character.characters_all[i].fitnes = 0
-
     @staticmethod
     def _remake_the_same():
         for i in range(len(Character.characters_all)):
             for j in range(i + 1, len(Character.characters_all)):
                 if Character.characters_all[i].web == Character.characters_all[j].web:
-                    Character.characters_all[j].web.randomize(size = 0.1)
+                    Character.characters_all[j].web.randomize(size = 0.3)
 
 
 

@@ -3,14 +3,11 @@ import pygame
 import math
 import config
 
-class Beast:
-    def __init__(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
-        self.set_params(position, floor, ceiling, speed, size, color ,only_circle)
-    def set_params(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
+class Person:
+    def __init__(self, position = [10, 10], speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
+        self.set_params(position, speed, size, color ,only_circle)
+    def set_params(self, position = [10, 10], speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
         self.position = [position[0], position[1]]
-
-        self.floor = floor
-        self.ceiling = ceiling
 
         self.angle = math.pi/2
         self.angle_speed = 0
@@ -41,8 +38,6 @@ class Beast:
         self.life_time = 0
 
         self.reset_position_value = [position[0], position[1]]
-        self.reset_floor = floor
-        self.reset_ceiling = ceiling
 
         self.dead_show_counter_standart = 25
         self.dead_show_counter = 25
@@ -92,33 +87,6 @@ class Beast:
             self.dead_show_counter = self.dead_show_counter_standart
         else:
             self.dead_show_counter -= 1
-    def update_fitnes_walls(self, lazer_of_death):
-        fitnes_result = 0
-        if self.life:
-            fitnes_result = min(abs(self.position[0] - lazer_of_death[0].position),
-                         abs(self.position[0] - lazer_of_death[1].position)) # todo + self.size
-
-            fitnes_result = min(fitnes_result,
-                         abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
-                         abs(self.position[1] + self.speed[1] - self.size - self.floor))
-        # if self.life:
-        #     fitnes_result = min(abs(self.position[0] - lazer_of_death[0].position),
-        #                  abs(self.position[0] - lazer_of_death[1].position)) # todo + self.size
-        #
-        #     fitnes_result = min(fitnes_result,
-        #                  abs(self.position[1] + self.speed[1] + self.size - self.ceiling),
-        #                  abs(self.position[1] + self.speed[1] - self.size - self.floor))
-        return fitnes_result * fitnes_result
-    def update_fitnes_enemies(self, enemies):
-        fitnes_result = 0
-        if self.life:
-            min_dist = math.sqrt((enemies[0].position[0] - self.position[0])**2 +(enemies[0].position[1] - self.position[1])**2) - self.size - enemies[0].size
-            for i in range(1, len(enemies)):
-                dist = math.sqrt((enemies[i].position[0] - self.position[0])**2 +(enemies[i].position[1] - self.position[1])**2) - self.size - enemies[i].size
-                if dist < min_dist:
-                    min_dist = dist
-            fitnes_result = min_dist
-        return fitnes_result
     def update(self, camera_move = None):
         if self.life:
             self.angle += self.angle_speed

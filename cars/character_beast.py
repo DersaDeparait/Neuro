@@ -8,9 +8,10 @@ import math
 class Character_beast(Character):
     def __init__(self, person = None, web = None):
         super().__init__(person, web)
-        if Character_beast.iterator == 998: person.color = [0, 0, 255]
-        if Character_beast.iterator == 999: person.color = [0, 255, 0]
-        if Character_beast.iterator == 1000: person.color = [255, 0, 0]
+        if Character_beast.iterator == 1: person.color = [0, 0, 255]
+        # if Character_beast.iterator == 998: person.color = [0, 0, 255]
+        # if Character_beast.iterator == 999: person.color = [0, 255, 0]
+        # if Character_beast.iterator == 1000: person.color = [255, 0, 0]
 
     def calculate_move(self, lazer_of_death, ceiling, floor, enemies):
         lazer_distance = lazer_of_death[1].position - lazer_of_death[0].position
@@ -53,10 +54,10 @@ class Character_beast(Character):
                                               ])
     def update(self, camera_move, lazer_of_death, enemies):
         self.person.possible_to_die_from_frame(lazer_of_death)
-        self.person.possible_to_die_from_enemies(enemies)
+        # self.person.possible_to_die_from_enemies(enemies)
         self.person.update_life_time()
         self.fitnes += self.person.update_fitnes_walls(lazer_of_death) * config.CAR_HOW_MANY_COST_BE_IN_MIDDLE
-        self.fitnes += self.person.update_fitnes_enemies(enemies) * config.CAR_HOW_MANY_COST_BE_FAR_FROM_ENEMIES
+        # self.fitnes += self.person.update_fitnes_enemies(enemies) * config.CAR_HOW_MANY_COST_BE_FAR_FROM_ENEMIES
         self.person.update(camera_move)
     def draw(self, display):
         self.person.draw(display)
