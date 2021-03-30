@@ -1,10 +1,8 @@
-import cars.Scene_car
-import cars.Scene_car_test
-import test_1_lineral.Scene_test_1
+import common.activity
 
 def main():
-    scene = test_1_lineral.Scene_test_1.Scene_test()
-    scene.loop()
+    activity = common.activity.Activity()
+    activity.loop()
 
 if __name__ == '__main__':
    main()

@@ -3,6 +3,7 @@ import pygame
 import math
 import config
 
+
 class Person:
     def __init__(self, position = [10, 10], speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
         self.set_params(position, speed, size, color ,only_circle)

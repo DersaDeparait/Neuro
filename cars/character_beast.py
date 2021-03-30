@@ -1,6 +1,4 @@
 from character import Character
-from cars.Beast import Beast
-from web import Web
 import random
 import config
 import math

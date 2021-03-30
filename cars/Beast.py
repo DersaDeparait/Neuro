@@ -3,6 +3,7 @@ import pygame
 import math
 import config
 
+
 class Beast:
     def __init__(self, position = [10, 10], floor = 100, ceiling = 900,  speed = [0, 0], size = 20, color = [200, 140, 70], only_circle = False):
         self.set_params(position, floor, ceiling, speed, size, color ,only_circle)

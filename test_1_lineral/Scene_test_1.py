@@ -1,5 +1,3 @@
-import pygame
-import random
 import config
 from Scene import Scene
 from test_1_lineral.Character_test import Character_test
