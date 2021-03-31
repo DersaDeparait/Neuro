@@ -1,6 +1,6 @@
 class Genetic_algorithm_params:
     def __init__(self) -> None:
-        self.max_counter = 1000  # Кількість циклів в 1 еопосі
+        self.max_iteration = 1000  # Кількість циклів в 1 еопосі
         self.max_epoch = 1000  # Кількість епох
         self.start_population = 10  # Кількість осіб взагалі
 
@@ -11,3 +11,10 @@ class Genetic_algorithm_params:
         self.web_layers = [6, 4]  # [6+9, 6, 4]#[6+3*3,4]#[6,4]#[6,6,4]
 
     def get_max_epoch(self): return self.max_epoch
+    def get_max_iteration(self): return self.max_iteration
+    def get_start_population(self): return self.start_population
+    def get_count_of_alive_after_epoch(self): return self.count_of_alive_after_epoch
+    def get_mutation_power(self): return self.mutation_power
+    def get_crossover_point_number(self): return self.crossover_point_number
+    def get_number_of_parents_couples(self): return self.number_of_parents_couples
+    def get_web_layers(self): return self.web_layers
