@@ -1,6 +1,6 @@
 import config
 import random
-from web import Web
+from common.web import Web
 
 class Character:
     iterator = 0

@@ -6,8 +6,8 @@ class Monitor:
     def __init__(self) -> None:
         super().__init__()
 
-        self.display_position = (50, 30)
-        self.display_size = (1700, 1030)
+        self.display_position = (50, 50)
+        self.display_size = (1200, 1200)
         self.display_color = (48, 189, 221)
         self.fps_default = 240
         self.is_show_info: bool = True
@@ -46,14 +46,17 @@ class Monitor:
 
 
 
-    def draw(self, environment:list, enemies:list, character: list):
+    def draw(self, environment: list = [], enemies: list = [], character: list = []):
         self._draw_fill_display()
-        self._draw_all(character)
+        self._draw_all(environment=environment, enemies=enemies, character=character)
         self._draw_flip()
 
     def _draw_fill_display(self): self.display.fill(self.display_color)
 
-    def _draw_all(self, character: list): pass
+    def _draw_all(self, environment: list = [], enemies: list = [], character: list = []):
+        for i in range(len(environment)): environment[i].draw(self.display)
+        for i in range(len(enemies)): enemies[i].draw(self.display)
+        for i in range(len(character)): character[i].draw(self.display)
 
     def _draw_flip(self):
         pygame.display.flip()

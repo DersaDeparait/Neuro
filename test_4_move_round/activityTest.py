@@ -1,13 +1,21 @@
-import datetime
-from common.geneticAlgorithmParams import GeneticAlgorithmParams
+from common.activity import Activity
 from common.dataWriter import DataWriter
+from common.geneticAlgorithmParams import GeneticAlgorithmParams
 from common.monitor import Monitor
 from common.character import Character
 
-class Activity:
+from test_4_move_round.personTest import PersonTest
+from test_4_move_round.characterTest import CharacterTest
+from test_4_move_round.geneticAlgorithmParamsTest import GeneticAlgorithmParamsTest
+
+import datetime
+
+
+class ActivityTest(Activity):# test 4 move round
     def __init__(self, monitor: Monitor = None,
                  genetic_algorithm_params: GeneticAlgorithmParams = None,
                  data_writer: DataWriter = None):
+        super(ActivityTest, self).__init__(monitor, genetic_algorithm_params, data_writer)
         self.init(monitor, genetic_algorithm_params, data_writer)
 
     def init(self, monitor: Monitor = None,
@@ -114,3 +122,4 @@ class Activity:
         else:
             self.is_iteration_work = True
             self.iteration = 0
+

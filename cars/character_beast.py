@@ -6,7 +6,7 @@ import math
 class Character_beast(Character):
     def __init__(self, person = None, web = None):
         super().__init__(person, web)
-        if Character_beast.iterator == 1: person.color = [0, 0, 255]
+        if Character_beast.iterator == 1: person.frame_color = [0, 0, 255]
         # if Character_beast.iterator == 998: person.color = [0, 0, 255]
         # if Character_beast.iterator == 999: person.color = [0, 255, 0]
         # if Character_beast.iterator == 1000: person.color = [255, 0, 0]

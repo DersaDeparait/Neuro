@@ -1,9 +1,8 @@
 import random
-import config
 import copy
 
 class Web:
-    def __init__(self, layers = config.WEB_LAYERS, web = None, randomize = None):
+    def __init__(self, layers = [2,2], web = None, randomize = None):
         self.layers = layers
         self.activation_function = lambda number: number
         if web != None:
@@ -35,7 +34,7 @@ class Web:
                 self.axon_weigh[i][j] += random.uniform(-size, size)
         for i in range(len(self.axon_bias)):
             self.axon_bias[i] += random.uniform(-size, size)
-    def make_mutation(self, percent = config.MUTATION_POWER, power = 1.):
+    def make_mutation(self, percent = 0.01, power = 1.):
         dispers = 0 + (sum(self.axon_bias))
         counter = 0 + len(self.axon_bias)
         for i in range(len(self.axon_weigh)):
@@ -52,7 +51,7 @@ class Web:
                 self.axon_bias[i] += random.uniform(-dispers * power, dispers * power)
     def new_randomize_deep_copy(self, size = 0.1):
         return Web(self.layers, web = self, randomize= size)
-    def new_mutant_deep_copy(self, percent = config.MUTATION_POWER, power = 1.):
+    def new_mutant_deep_copy(self, percent = 0.01, power = 1.):
         web = Web(self.layers, web = self)
         web.make_mutation(percent = percent, power = power)
         return web

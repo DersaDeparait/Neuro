@@ -1,3 +1,3 @@
-class Data_writer:
+class DataWriter:
     def __init__(self) -> None:
         super().__init__()
