@@ -6,7 +6,7 @@ class GeneticAlgorithmParamsTest(GeneticAlgorithmParams):
         super(GeneticAlgorithmParamsTest, self).__init__()
         self.max_iteration = 1000  # Кількість циклів в 1 еопосі
         self.max_epoch = 1000  # Кількість епох
-        self.start_population = 100  # Кількість осіб взагалі
+        self.start_population = 1000  # Кількість осіб взагалі
 
         self.count_of_alive_after_epoch = self.start_population * 0.5  # Кількість виживших пісял того як закінчився минулий раунд
         self.mutation_power = 0.01  # Ймовірність мутації гена межі [0 до 1]

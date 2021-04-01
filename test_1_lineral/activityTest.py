@@ -37,16 +37,32 @@ class ActivityTest(Activity):# test 1 lineral
                 color=[random.randint(10,20), random.randint(0,50), random.randint(0,50)],
                 position=[random.randint(self.start_pos[0], self.end_pos[0]),
                           random.randint(self.start_pos[1], self.end_pos[1])],
-                size=10),
-            web=Web(layers=[2,2])
-            # web=Web(layers=[1,1])
-            ))
+                size=10)))
 
-    # def _move_character(self):
-    #     for i in range(len(self.character)):
-    #         self.web.calculate_all([])
+        print(self.character[0].web.axon_weigh)
+        print(self.character[0].web.axon_bias)
+
+        print(self.character[1].web.axon_weigh)
+        print(self.character[1].web.axon_bias)
+
+    def _move_character(self):
+        for i in range(len(self.character)):
+            self.character[i].calculate(self.start_pos, self.end_pos, self.goal_relative)
+
+    def _write_data_on_screen(self):
+        self.monitor.write_data_on_screen("Test e:{}, i:{} {}".format(self.epoch, self.iteration, self.character[0].fitness))
 
     def _draw_all(self):
         self.monitor.draw(environment=self.environment, enemies=[], character=self.character)
+
+    def _calculate_fitness_function_iteration(self):
+        for i in range(len(self.character)):
+            self.character[i].calculate_fitness(self.goal_absolute)
+
+    def _create_new_population(self) -> None:
+        CharacterTest.calculate_new_population()
+
+
+
 
 
