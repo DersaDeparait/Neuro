@@ -100,7 +100,8 @@ class Activity:
     def _save_character_data(self) -> None:pass
 
 
-    def _create_new_population(self) -> None: pass
+    def _create_new_population(self) -> None:
+        Character.calculate_new_population(self.genetic_algorithm_params)
 
 
     def _check_loop_epoch_condition(self) -> None:
