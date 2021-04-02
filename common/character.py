@@ -53,6 +53,7 @@ class Character:
             web_temp.append(Character.characters_all[i].web)
             fitness.append(Character.characters_all[i].fitness)
             fitness_temp.append(Character.characters_all[i].fitness)
+            print(web[i].axon_weigh, web[i].axon_bias)
 
         print() # fixme del after test
 
