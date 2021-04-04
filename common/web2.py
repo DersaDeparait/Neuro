@@ -20,11 +20,11 @@ class Web:
         if type(o) == Web:
             for i in range(len(self.axon_weigh)):
                 for j in range(len(self.axon_weigh[i])):
-                    if abs(self.axon_weigh[i][j] - o.axon_weigh[i][j]) > 0.01:
+                    if abs(self.axon_weigh[i][j] - o.axon_weigh[i][j]) > 0.001:
                         return False
             for i in range(len(self.axon_bias)):
                 for j in range(len(self.axon_bias[i])):
-                    if abs(self.axon_bias[i][j] - o.axon_bias[i][j]) > 0.01:
+                    if abs(self.axon_bias[i][j] - o.axon_bias[i][j]) > 0.001:
                         return False
             return True
 
@@ -34,13 +34,18 @@ class Web:
             for j in range(len(self.axon_weigh[i])):
                 self.axon_weigh[i][j] += random.uniform(-size, size)
         for i in range(len(self.axon_bias)):
-            self.axon_bias[i] += random.uniform(-size, size)
+            for j in range(len(self.axon_bias[i])):
+                self.axon_bias[i][j] += random.uniform(-size, size)
     def make_mutation(self, percent = 0.01, power = 1.):
-        dispers = 0 + (sum(self.axon_bias))
-        counter = 0 + len(self.axon_bias)
+        dispers = 0
+        counter = 0
         for i in range(len(self.axon_weigh)):
             for j in range(len(self.axon_weigh[i])):
                 dispers += self.axon_weigh[i][j]
+                counter += 1
+        for i in range(len(self.axon_bias)):
+            for j in range(len(self.axon_bias[i])):
+                dispers += self.axon_bias[i][j]
                 counter += 1
         dispers = dispers / counter + 0.1
         for i in range(len(self.axon_weigh)):
@@ -48,8 +53,9 @@ class Web:
                 if random.random() < percent:
                     self.axon_weigh[i][j] += random.uniform(-dispers * power, dispers * power)
         for i in range(len(self.axon_bias)):
-            if random.random() < percent:
-                self.axon_bias[i] += random.uniform(-dispers * power, dispers * power)
+            for j in range(len(self.axon_bias[i])):
+                if random.random() < percent:
+                    self.axon_bias[i][j] += random.uniform(-dispers * power, dispers * power)
     def new_randomize_deep_copy(self, size = 0.1):
         return Web(self.layers, web = self, randomize= size)
     def new_mutant_deep_copy(self, percent = 0.01, power = 1.):
@@ -62,32 +68,37 @@ class Web:
 
     def cross_crossover_one(self, neuro_1):
         new_neuro = Web(web = self)
-        sum = 0
+        count = 0
         for i in range(len(new_neuro.axon_weigh)):
             for j in range(len(new_neuro.axon_weigh[i])):
-                sum += 1
-            sum += 1
+                count += 1
+        for i in range(len(self.axon_bias)):
+            for j in range(len(self.axon_bias[i])):
+                count += 1
 
-        point = random.randint(0, sum - 1)
+        point = random.randint(0, count - 1)
         counter = 0
-        if random.random()<0.5:
-            for i in range(len(new_neuro.axon_weigh)):
-                for j in range(len(new_neuro.axon_weigh[i])):
-                    if counter > point:
-                        new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
-                    counter += 1
-                if counter > point:
-                    new_neuro.axon_bias[i] = neuro_1.axon_bias[i]
+        random_val = random.choice([1, -1])
+        # if random.random() < 0.5:
+        for i in range(len(new_neuro.axon_weigh)):
+            for j in range(len(new_neuro.axon_weigh[i])):
+                if counter * random_val >= point * random_val:
+                    new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
                 counter += 1
-        else:
-            for i in range(len(new_neuro.axon_weigh)):
-                for j in range(len(new_neuro.axon_weigh[i])):
-                    if counter < point:
-                        new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
-                    counter += 1
-                if counter < point:
-                    new_neuro.axon_bias[i] = neuro_1.axon_bias[i]
+            for j in range(len(new_neuro.axon_bias[i])):
+                if counter * random_val >= point * random_val:
+                    new_neuro.axon_bias[i][j] = neuro_1.axon_bias[i][j]
                 counter += 1
+        # else:
+        #     for i in range(len(new_neuro.axon_weigh)):
+        #         for j in range(len(new_neuro.axon_weigh[i])):
+        #             if counter < point:
+        #                 new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
+        #             counter += 1
+        #         for j in range(len(new_neuro.axon_bias[i])):
+        #             if counter < point:
+        #                 new_neuro.axon_bias[i][j] = neuro_1.axon_bias[i][j]
+        #         counter += 1
         return new_neuro
     def cross_crossover_several(self, neuro_1, point_number : int = 2, return_couple = False):
         if point_number < 1: point_number = 1
@@ -235,11 +246,27 @@ class Web:
     def _get_output(self):
         return self.neurons[-1]
 
-w = Web([2, 3, 1])
-w2 = Web([2, 3, 1])
-w.axon_weigh = [[0,0,0,0]]
-w.axon_bias = [[0, 0]]
 
-print(w.axon_weigh, w.axon_bias)
-print(w2.axon_weigh, w2.axon_bias)
-print(w==w2)
+
+
+w = [Web([2, 2, 1, 3]) for i in range(2)]
+w[1].axon_weigh = [[1, 1, 1, 1], [1, 1],  [1, 1, 1, 1, 1, 1]]
+w[1].axon_bias = [[1, 1], [1], [1, 1, 1]]
+for i in range(1000):
+    w.append(w[0].cross_crossover_one(w[1]))
+
+w[1].axon_weigh[0] = [2, 2, 2, 2]
+w[1].axon_weigh[1] = [3, 3, 3, 3, 3, 3]
+w[1].axon_bias[0] = [4, 4]
+w[1].axon_bias[1] = [5, 5, 5]
+
+# for i in range(len(w)):
+#     print(i, w[i].axon_weigh[0], w[i].axon_bias[0], w[i].axon_weigh[1], w[i].axon_bias[1], w[i].axon_weigh[2], w[i].axon_bias[2])
+
+
+
+# print(w2.axon_weigh, w2.axon_bias)
+# print(w==w2)
+
+for i in range(-220,200):
+    print(6*i%7,2*i%7,3*i%7,1*i%7)

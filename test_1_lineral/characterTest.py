@@ -10,7 +10,7 @@ class CharacterTest(Character):
     def __init__(self, person=None, web=None) -> None:
         super(CharacterTest, self).__init__(person, web)
         # self.web = Web(layers=[2, 2], randomize=True)
-        self.web = Web(layers=[2, 2], randomize=True)
+        self.web = Web(layers=[2, 4], randomize=True)
 
     def calculate(self, start_pos, end_pos, goal_relative):
         distance = [end_pos[0] - start_pos[0], end_pos[1] - start_pos[1]]
@@ -22,9 +22,9 @@ class CharacterTest(Character):
                                         ])
 
         self.person.speed[0] = output[0]
-        # self.person.speed[0] += output[1] * 10
-        self.person.speed[1] = output[1]
-        # self.person.speed[1] += output[3] * 10
+        self.person.speed[0] += output[1] * 10
+        self.person.speed[1] = output[2]
+        self.person.speed[1] += output[3] * 10
 
     def calculate_fitness(self, goal_absolute):
         self.fitness += 1 / (0.1 + math.sqrt(
