@@ -67,44 +67,35 @@ class Web:
         self.activation_function = activation_function
 
     def cross_crossover_one(self, neuro_1):
-        new_neuro = Web(web = self)
         count = 0
-        for i in range(len(new_neuro.axon_weigh)):
-            for j in range(len(new_neuro.axon_weigh[i])):
+        for i in range(len(self.axon_weigh)):
+            for j in range(len(self.axon_weigh[i])):
                 count += 1
         for i in range(len(self.axon_bias)):
             for j in range(len(self.axon_bias[i])):
                 count += 1
 
-        point = random.randint(0, count - 1)
+        position_to_cross = random.choice([[self, neuro_1],[neuro_1, self]])
+        new_neuro = Web(web=position_to_cross[0])
+
+        point = random.randint(0, count - 2)
         counter = 0
-        random_val = random.choice([1, -1])
-        # if random.random() < 0.5:
         for i in range(len(new_neuro.axon_weigh)):
             for j in range(len(new_neuro.axon_weigh[i])):
-                if counter * random_val >= point * random_val:
-                    new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
+                if counter > point:
+                    new_neuro.axon_weigh[i][j] = position_to_cross[1].axon_weigh[i][j]
                 counter += 1
             for j in range(len(new_neuro.axon_bias[i])):
-                if counter * random_val >= point * random_val:
-                    new_neuro.axon_bias[i][j] = neuro_1.axon_bias[i][j]
+                if counter > point:
+                    new_neuro.axon_bias[i][j] = position_to_cross[1].axon_bias[i][j]
                 counter += 1
-        # else:
-        #     for i in range(len(new_neuro.axon_weigh)):
-        #         for j in range(len(new_neuro.axon_weigh[i])):
-        #             if counter < point:
-        #                 new_neuro.axon_weigh[i][j] = neuro_1.axon_weigh[i][j]
-        #             counter += 1
-        #         for j in range(len(new_neuro.axon_bias[i])):
-        #             if counter < point:
-        #                 new_neuro.axon_bias[i][j] = neuro_1.axon_bias[i][j]
-        #         counter += 1
         return new_neuro
+
     def cross_crossover_several(self, neuro_1, point_number : int = 2, return_couple = False):
         if point_number < 1: point_number = 1
 
-        new_neuro = Web(web = self)
-        new_neuro_2 = Web(web = neuro_1)
+        new_neuro = Web(web=self)
+        new_neuro_2 = Web(web=neuro_1)
         sum = 0
         for i in range(len(new_neuro.axon_weigh)):
             for j in range(len(new_neuro.axon_weigh[i])):
@@ -252,7 +243,7 @@ class Web:
 w = [Web([2, 2, 1, 3]) for i in range(2)]
 w[1].axon_weigh = [[1, 1, 1, 1], [1, 1],  [1, 1, 1, 1, 1, 1]]
 w[1].axon_bias = [[1, 1], [1], [1, 1, 1]]
-for i in range(1000):
+for i in range(10000):
     w.append(w[0].cross_crossover_one(w[1]))
 
 w[1].axon_weigh[0] = [2, 2, 2, 2]
@@ -260,13 +251,5 @@ w[1].axon_weigh[1] = [3, 3, 3, 3, 3, 3]
 w[1].axon_bias[0] = [4, 4]
 w[1].axon_bias[1] = [5, 5, 5]
 
-# for i in range(len(w)):
-#     print(i, w[i].axon_weigh[0], w[i].axon_bias[0], w[i].axon_weigh[1], w[i].axon_bias[1], w[i].axon_weigh[2], w[i].axon_bias[2])
-
-
-
-# print(w2.axon_weigh, w2.axon_bias)
-# print(w==w2)
-
-for i in range(-220,200):
-    print(6*i%7,2*i%7,3*i%7,1*i%7)
+for i in range(len(w)):
+    print(i, w[i].axon_weigh[0], w[i].axon_bias[0], w[i].axon_weigh[1], w[i].axon_bias[1], w[i].axon_weigh[2], w[i].axon_bias[2])
