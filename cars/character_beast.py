@@ -115,7 +115,7 @@ class Character_beast(Character):
             if Character_beast.characters_all[i].fitnes > Character_beast.characters_all[life_beast].fitnes:
                 life_beast = i
 
-        web = Character_beast.characters_all[life_beast].web.new_randomize_deep_copy(size = 0)
+        web = Character_beast.characters_all[life_beast].web.new_randomize_deep_copy(randomize_power= 0)
 
         for i in range(len(Character_beast.characters_all)):
             Character_beast.characters_all[i].web = web.new_randomize_deep_copy()

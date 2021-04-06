@@ -39,11 +39,6 @@ class ActivityTest(Activity):# test 1 lineral
                           random.randint(self.start_pos[1], self.end_pos[1])],
                 size=10)))
 
-        print(self.character[0].web.axon_weigh)
-        print(self.character[0].web.axon_bias)
-
-        print(self.character[1].web.axon_weigh)
-        print(self.character[1].web.axon_bias)
 
     def _move_character(self):
         for i in range(len(self.character)):
@@ -51,7 +46,7 @@ class ActivityTest(Activity):# test 1 lineral
             self.character[i].move()
 
     def _write_data_on_screen(self):
-        self.monitor.write_data_on_screen("Test e:{}, i:{} aw:{}, ab:{}".format(self.epoch, self.iteration, self.character[0].web.axon_weigh, self.character[0].web.axon_bias))
+        self.monitor.write_data_on_screen("Test e:{}, i:{}".format(self.epoch, self.iteration))
 
     def _draw_all(self):
         self.monitor.draw(environment=self.environment, enemies=[], character=self.character)

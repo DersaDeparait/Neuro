@@ -144,7 +144,7 @@ class Character:
     @staticmethod
     def _make_mutation():
         for i in range(len(Character.characters_all)):
-            Character.characters_all[i].web.make_mutation(config.MUTATION_POWER)
+            Character.characters_all[i].web.make_mutation(config.MUTATION_PROBABILITY)
     @staticmethod
     def _reset_position():
         for i in range(len(Character.characters_all)):
@@ -155,7 +155,7 @@ class Character:
         for i in range(len(Character.characters_all)):
             for j in range(i + 1, len(Character.characters_all)):
                 if Character.characters_all[i].web == Character.characters_all[j].web:
-                    Character.characters_all[j].web.randomize(size = 0.3)
+                    Character.characters_all[j].web.randomize(randomize_probability= 0.3)
 
 
 

@@ -11,7 +11,7 @@ MAX_EPOCH = 1000 # Кількість епох
 START_POPULATION = 10 # Кількість осіб взагалі
 
 COUNT_OF_ALIVE_AFTER_EPOCH = 10 # Кількість виживших пісял того як закінчився минулий раунд
-MUTATION_POWER = 0.01 # Ймовірність мутації гена межі [0 до 1]
+MUTATION_PROBABILITY = 0.01 # Ймовірність мутації гена межі [0 до 1]
 CROSSOVER_POINT_NUMBER = 2 # Кількість точко кросовера, зазвичай 1, можна до 10
 NUMBER_OF_PARENTS_COUPLES = START_POPULATION
 WEB_LAYERS = [6,4]#[6+9, 6, 4]#[6+3*3,4]#[6,4]#[6,6,4]

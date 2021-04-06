@@ -11,7 +11,7 @@ class Character:
 
     def __init__(self, person: Person=None, web=None) -> None:
         self.person = person or Person()
-        self.web = web or Web(randomize=1)
+        self.web = web or Web(randomize_power=1)
         self.fitness = 0
         Character.counter += 1
         Character.characters_all.append(self)
@@ -53,9 +53,7 @@ class Character:
             web_temp.append(Character.characters_all[i].web)
             fitness.append(Character.characters_all[i].fitness)
             fitness_temp.append(Character.characters_all[i].fitness)
-            print(web[i].axon_weigh, web[i].axon_bias)
 
-        print() # fixme del after test
 
         web_new = []  # всі нейронки,
         fitness_new = []  # всі фітнес функції
@@ -74,7 +72,7 @@ class Character:
 
         # Мутації
         for i in range(len(web_new)):
-            web_new[i].make_mutation(genetic_algorithm_params.mutation_power)
+            web_new[i].make_mutation(randomize_probability=genetic_algorithm_params.get_mutation_probability())
 
         # Оновлення вагів всіх осіб. Заміна старих значень на нові і обновлення стартових позицій
         for i in range(len(Character.characters_all)):

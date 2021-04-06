@@ -10,7 +10,7 @@ class CharacterTest(Character):
     def __init__(self, person=None, web=None) -> None:
         super(CharacterTest, self).__init__(person, web)
         # self.web = Web(layers=[2, 2], randomize=True)
-        self.web = Web(layers=[2, 4], randomize=True)
+        self.web = Web(layers=[2, 4], randomize_power=True)
 
     def calculate(self, start_pos, end_pos, goal_relative):
         distance = [end_pos[0] - start_pos[0], end_pos[1] - start_pos[1]]
