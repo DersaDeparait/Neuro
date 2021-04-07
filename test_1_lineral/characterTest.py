@@ -28,13 +28,9 @@ class CharacterTest(Character):
 
     def calculate_fitness(self, goal_absolute):
         self.fitness += 1 / (0.1 + math.sqrt(
-            (self.person.position[0]-goal_absolute[0])**2
+            (self.person.position[0] - goal_absolute[0]) ** 2
             +
-            (self.person.position[1]-goal_absolute[1])**2
+            (self.person.position[1] - goal_absolute[1]) ** 2
         ))
-        self.fitness += 1 if self.person.speed[0] * (goal_absolute[0] - self.person.position[0]) >= 0 else -1
-        self.fitness += 1 if self.person.speed[1] * (goal_absolute[1] - self.person.position[1]) >= 0 else -1
-
-
-
-
+        self.fitness += self.person.speed[0] * (goal_absolute[0] - self.person.position[0]) / 1000
+        self.fitness += self.person.speed[1] * (goal_absolute[1] - self.person.position[1]) / 1000

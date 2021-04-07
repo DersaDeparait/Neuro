@@ -9,7 +9,7 @@ class Monitor:
         self.display_position = (50, 50)
         self.display_size = (1200, 1200)
         self.display_color = (48, 189, 221)
-        self.fps_default = 240
+        self.fps_default = 480
         self.is_show_info: bool = True
 
         os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % self.display_position

@@ -28,7 +28,8 @@ class Web:
         print("number : {}/{} architect {}  ".format(self.number, Web.counter, self.layers), end=" ")
         for i in range(len(self.neurons)):
             for j in range(len(self.neurons[i])):
-                print(self.neurons[i][j].get_all_weigh(), end=" | ")
+                print(self.neurons[i][j].get_all_weigh(), end=" ")
+            print(end=" | ")
         print()
 
 

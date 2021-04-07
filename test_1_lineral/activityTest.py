@@ -34,7 +34,7 @@ class ActivityTest(Activity):# test 1 lineral
         self.character = []
         for i in range(self.genetic_algorithm_params.start_population):
             self.character.append(CharacterTest(person=PersonTest(
-                color=[random.randint(10,20), random.randint(0,50), random.randint(0,50)],
+                color=[random.randint(10, 20), random.randint(0,50), random.randint(0,50)],
                 position=[random.randint(self.start_pos[0], self.end_pos[0]),
                           random.randint(self.start_pos[1], self.end_pos[1])],
                 size=10)))

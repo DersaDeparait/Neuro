@@ -41,7 +41,7 @@ class Character:
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].fitness /= suma
 
-        print(suma) # fixme del after test
+        print(suma/len(Character.characters_all)) # fixme del after test
 
         count_of_alive = genetic_algorithm_params.get_count_of_alive_after_epoch() # Кількість виживших із минулого покоління
         web = []# Оригінальний список нейронок
@@ -65,7 +65,9 @@ class Character:
         # створення потомства і заповнення залишившихся слотів
         for i in range(len(web_new), len(web)):
             parents_web = random.choices(web, fitness, k=2) # Вибирається двоє батьків
-            couple = parents_web[0].cross_crossover_several(parents_web[1], point_number=1, return_couple=True) # створення двох дітей
+            couple = parents_web[0].cross_crossover_several(parents_web[1],
+                                                            point_number=genetic_algorithm_params.get_crossover_point_number(),
+                                                            return_couple=True) # створення двох дітей
             web_new.append(couple[0])
             web_new.append(couple[1])
             i += 1
@@ -79,11 +81,3 @@ class Character:
             Character.characters_all[i].web = web_new[i]
             Character.characters_all[i].fitness = 0
             Character.characters_all[i].person.reset_position(position=[random.randint(100, 1100), random.randint(100, 1100)])
-
-
-
-
-
-
-
-

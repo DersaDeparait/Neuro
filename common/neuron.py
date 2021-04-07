@@ -1,8 +1,14 @@
 import random
+import math
+
+def sigmoida(x): return 1 / (1 + math.e**(-x))
+def tanh(x): return math.tanh(x)
+def tanh_div2(x): return math.tanh(x/2)
+def tanh_div4(x): return math.tanh(x/4)
 
 class Neuron:
     counter = 0
-    def __init__(self, fathers: list =[], bias_weigh: int=0, activation_funk=lambda x:x, randomize_power=None):
+    def __init__(self, fathers: list =[], bias_weigh: int=0, activation_funk=tanh_div2, randomize_power=None):
         if randomize_power == None:
             self.fathers_relation = [Relation(fathers[i], weigh=0) for i in range(len(fathers))]
         else:
