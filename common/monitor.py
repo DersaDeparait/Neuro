@@ -7,7 +7,7 @@ class Monitor:
         super().__init__()
 
         self.display_position = (50, 50)
-        self.display_size = (1200, 1200)
+        self.display_size = (3400, 1200)
         self.display_color = (48, 189, 221)
         self.fps_default = 480
         self.is_show_info: bool = True

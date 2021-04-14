@@ -40,6 +40,7 @@ class Character:
             suma += Character.characters_all[i].fitness
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].fitness /= suma
+            Character.characters_all[i].web.print_neuro_chain()
 
         print(suma/len(Character.characters_all)) # fixme del after test
 

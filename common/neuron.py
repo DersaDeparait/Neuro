@@ -8,7 +8,7 @@ def tanh_div4(x): return math.tanh(x/4)
 
 class Neuron:
     counter = 0
-    def __init__(self, fathers: list =[], bias_weigh: int=0, activation_funk=tanh_div2, randomize_power=None):
+    def __init__(self, fathers: list =[], bias_weigh: int=0, activation_funk=tanh, randomize_power=None):
         if randomize_power == None:
             self.fathers_relation = [Relation(fathers[i], weigh=0) for i in range(len(fathers))]
         else:
