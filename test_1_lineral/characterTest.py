@@ -9,22 +9,22 @@ class CharacterTest(Character):
 
     def __init__(self, person=None, web=None) -> None:
         super(CharacterTest, self).__init__(person, web)
-        # self.web = Web(layers=[2, 2], randomize=True)
-        self.web = Web(layers=[2, 4], randomize_power=True)
 
     def calculate(self, start_pos, end_pos, goal_relative):
-        distance = [end_pos[0] - start_pos[0], end_pos[1] - start_pos[1]]
+        distance = []
+        for i in range(self.web.layers[0]):
+            distance.append(end_pos[i//2][i % 2] - start_pos[i//2][i%2])
 
-        output = self.web.calculate_all([
-                                            (self.person.position[0] - start_pos[0])/distance[0]
-                                            ,
-                                            (self.person.position[1] - start_pos[1])/distance[1]
-                                        ])
+        input_data = []
+        for i in range(self.web.layers[0]):
+            input_data.append((self.person.position[i] - start_pos[i//2][i%2])/distance[i])
+        output = self.web.calculate_all(input_data)
 
-        self.person.speed[0] = output[0]
-        self.person.speed[0] += output[1] * 10
-        self.person.speed[1] = output[2]
-        self.person.speed[1] += output[3] * 10
+        input_to_output = self.web.layers[-1]//self.web.layers[0]
+        for i in range(self.web.layers[0]):
+            self.person.speed[i] = output[i * input_to_output]
+            for j in range(1, input_to_output):
+                self.person.speed[i] += output[i*input_to_output+j] * 10**j
 
     def calculate_fitness(self, goal_absolute):
         self.fitness += 1 / (0.1 + math.sqrt(

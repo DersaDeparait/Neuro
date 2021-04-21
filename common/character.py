@@ -13,6 +13,7 @@ class Character:
         self.person = person or Person()
         self.web = web or Web(randomize_power=1)
         self.fitness = 0
+        self.adaptive_params = None # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Character.counter += 1
         Character.characters_all.append(self)
 
@@ -40,7 +41,7 @@ class Character:
             suma += Character.characters_all[i].fitness
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].fitness /= suma
-            Character.characters_all[i].web.print_neuro_chain()
+            # Character.characters_all[i].web.print_neuro_chain()
 
         print(suma/len(Character.characters_all)) # fixme del after test
 

@@ -34,7 +34,7 @@ class Activity:
 
     def _character_init(self) -> None:
         self.character = []
-        for i in range(self.genetic_algorithm_params.start_population):
+        for i in range(self.genetic_algorithm_params._start_population):
             self.character.append(Character())
 
     def _enemy_init(self) -> None: pass
