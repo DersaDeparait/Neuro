@@ -6,10 +6,12 @@ class Monitor:
     def __init__(self) -> None:
         super().__init__()
 
+        self.show_picture = True
+
         self.display_position = (50, 50)
         self.display_size = (3400, 1200)
         self.display_color = (48, 189, 221)
-        self.fps_default = 480
+        self.fps_default = 240
         self.is_show_info: bool = True
 
         os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % self.display_position
@@ -27,8 +29,8 @@ class Monitor:
             if event.type == pygame.QUIT:
                 pygame.quit()  # sys.exit() if sys is imported
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN: pass
-                if event.key == pygame.K_UP: pass
+                if event.key == pygame.K_DOWN: self.show_picture = False
+                if event.key == pygame.K_UP: self.show_picture = True
                 if event.key == pygame.K_LEFT: pass
                 if event.key == pygame.K_RIGHT: pass
                 if event.key == pygame.K_SPACE: pass
@@ -48,7 +50,8 @@ class Monitor:
 
     def draw(self, environment: list = [], enemies: list = [], character: list = []):
         self._draw_fill_display()
-        self._draw_all(environment=environment, enemies=enemies, character=character)
+        if self.show_picture:
+            self._draw_all(environment=environment, enemies=enemies, character=character)
         self._draw_flip()
 
     def _draw_fill_display(self): self.display.fill(self.display_color)
@@ -60,6 +63,7 @@ class Monitor:
 
     def _draw_flip(self):
         pygame.display.flip()
+        self.clock.tick(self.fps_default)
 
 
 

@@ -31,6 +31,17 @@ class Web:
                 print(self.neurons[i][j].get_all_weigh(), end=" ")
             print(end=" | ")
         print()
+    def get_neuro_chain(self):
+        text = ""#"number : {}/{} architect {}  ".format(self.number, Web.counter, self.layers)
+        for i in range(len(self.neurons)):
+            if i == 0: continue
+            for j in range(len(self.neurons[i])):
+                weigh = self.neurons[i][j].get_all_weigh()
+                for k in range(len(weigh)):
+                    text += " {:.2f}".format(weigh[k])
+                text += " |"
+            text += "| "
+        return text
 
 
     def calculate_all(self, input):

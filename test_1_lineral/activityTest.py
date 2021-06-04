@@ -38,15 +38,15 @@ class ActivityTest(Activity): # test 1 lineral
         self.character = []
         for i in range(self.genetic_algorithm_params._start_population):
             position = []
-            for i in range(self.genetic_algorithm_params.get_dimension()):
-                position.append(random.randint(self.start_pos[i//2][i%2], self.end_pos[i//2][i%2]))
+            for j in range(self.genetic_algorithm_params.get_dimension()):
+                position.append(random.randint(self.start_pos[j // 2][j % 2], self.end_pos[j // 2][j % 2]))
 
-
-            self.character.append(CharacterTest(person=PersonTest(
-                                                color=[random.randint(10, 20), random.randint(0, 50), random.randint(0, 50)],
-                                                position=position,
-                                                size=10),
-                                    web=Web(self.genetic_algorithm_params.get_web_layers(), randomize_power=1)))
+            web = Web(self.genetic_algorithm_params.get_web_layers(), randomize_power=1)
+            person = PersonTest(color=[random.randint(10, 20), random.randint(0, 50), random.randint(0, 50)],#[i * 80, i * 80, 100],
+                                position=position,
+                                size=10,#5 + i * 5,
+                                default_position_range=[self.start_pos, self.end_pos])
+            self.character.append(CharacterTest(person=person, web=web))
 
 
     def _move_character(self):
@@ -55,16 +55,37 @@ class ActivityTest(Activity): # test 1 lineral
             self.character[i].move()
 
     def _write_data_on_screen(self):
-        self.monitor.write_data_on_screen("Test e:{}, i:{}".format(self.epoch, self.iteration))
+        self.monitor.write_data_on_screen("layers: {},  popul: {},  elita: {}, alive_after_epoch: {} mutation: {:.3%} |||| e:{}, i:{}"
+                                          .format(self.genetic_algorithm_params.get_web_layers(),
+                                                  self.genetic_algorithm_params.get_start_population(),
+                                                  self.genetic_algorithm_params.get_count_elitism(),
+                                                  self.genetic_algorithm_params.get_count_of_alive_after_epoch(),
+                                                  self.genetic_algorithm_params.get_mutation_probability(),
+                                                  self.epoch, self.iteration
+                                                  ))
+
+        # text = ""
+        # for i in range(len(self.character)):
+        #     t_n = self.character[i].web.get_neuro_chain()
+        #     t0 = ""
+        #     for pos in self.character[i].person.position:
+        #         t0 += "{:.3f} ".format((pos - 100)/1000)
+        #     t1 = ""
+        #     for j in range(min(len(self.character[i].person.speed), 2)):
+        #         t1 += "{:.3f} ".format(self.character[i].person.speed[j])
+        #     text += "{}) chain: {} pos: {} sp: {} ||| ".format(i, t_n, t0, t1)
+        # print(self.iteration, text)
+
+        # print("1: {}, {} | 2: {},{} | 3: {},{} | 4: {},{}"
+        #                                   .format(self.character[0].person.position, self.character[0].person.speed,
+        #                                           self.character[1].person.position, self.character[1].person.speed,
+        #                                           self.character[2].person.position, self.character[2].person.speed,
+        #                                           self.character[3].person.position, self.character[3].person.speed))
 
     def _draw_all(self):
         self.monitor.draw(environment=self.environment, enemies=[], character=self.character)
 
     def _calculate_fitness_function_iteration(self):
         for i in range(len(self.character)):
-            self.character[i].calculate_fitness(self.goal_absolute[0])
-
-
-
-
-
+            self.character[i].calculate_fitness(self.goal_absolute, frame=[self.start_pos,self.end_pos],
+                                                geneticAlgorithmParamsTest=self.genetic_algorithm_params)

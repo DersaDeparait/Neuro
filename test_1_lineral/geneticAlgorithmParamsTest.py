@@ -22,7 +22,7 @@ class GeneticAlgorithmParamsTest(GeneticAlgorithmParams):
     list_fitness_way_distance = [0, 1] # fitness_distance += 1/(1+x)
     list_fitness_way_side = [0, 1] # fitness_side_x or y += 1
     list_fitness_way_vector = [0, 1] # fitness_vector to goal += from -1 to 1
-    list_fitness_way_vector_speed = [0, 1] # fitness_vector_speed += from -1 to 1   speed_absolute/dis_absolute     (if speed_absolute>dis_absolute 0)
+    list_fitness_way_kill_all_unwanted = [0, 1] # fitness_vector_speed += from -1 to 1   speed_absolute/dis_absolute     (if speed_absolute>dis_absolute 0)
 
     def __init__(self) -> None:
         super(GeneticAlgorithmParamsTest, self).__init__()
@@ -30,12 +30,12 @@ class GeneticAlgorithmParamsTest(GeneticAlgorithmParams):
         self._max_iteration = 1000  # Кількість циклів в 1 еопосі
         self._max_epoch = 1000  # Кількість епох
 
-        self._start_population = GeneticAlgorithmParams.list_start_population[3]  # Кількість осіб взагалі
+        self._start_population = 1000#GeneticAlgorithmParams.list_start_population[3]  # Кількість осіб взагалі
         self._count_elitism = GeneticAlgorithmParams.list_count_elitism[0]
         self._count_of_alive_after_epoch = int(self._start_population * GeneticAlgorithmParams.list_count_of_alive_after_epoch[4])  # Кількість виживших пісял того як закінчився минулий раунд
         self._random_kid = GeneticAlgorithmParams.list_random_kid[0]
 
-        self._mutation_probability = GeneticAlgorithmParams.list_mutation_probability[1] # Ймовірність мутації гена межі [0 до 1]
+        self._mutation_probability = GeneticAlgorithmParams.list_mutation_probability[2] # Ймовірність мутації гена межі [0 до 1]
         self._type_selection = GeneticAlgorithmParams.list_type_selection[0]
         self._type_make_new_population = GeneticAlgorithmParams.list_type_make_new_population[1]
         self._type_breeding = GeneticAlgorithmParams.list_type_breeding[0]
@@ -43,12 +43,12 @@ class GeneticAlgorithmParamsTest(GeneticAlgorithmParams):
         self._dimension = GeneticAlgorithmParamsTest.list_dimension[1]
         self._with_goal_changing = GeneticAlgorithmParamsTest.list_with_goal_changing[0]
         self._with_spin = GeneticAlgorithmParamsTest.list_with_spin[0]
-        self._out_data_for_one_dimension = GeneticAlgorithmParamsTest.list_out_data_for_one_dimension[1]
+        self._out_data_for_one_dimension = GeneticAlgorithmParamsTest.list_out_data_for_one_dimension[0]
 
-        self._fitness_way_distance = GeneticAlgorithmParamsTest.list_fitness_way_distance[0]
-        self._fitness_way_side = GeneticAlgorithmParamsTest.list_fitness_way_side[0]
-        self._fitness_way_vector = GeneticAlgorithmParamsTest.list_fitness_way_vector[0]
-        self._fitness_way_vector_speed = GeneticAlgorithmParamsTest.list_fitness_way_vector_speed[0]
+        self._fitness_way_distance = GeneticAlgorithmParamsTest.list_fitness_way_distance[1]
+        self._fitness_way_side = GeneticAlgorithmParamsTest.list_fitness_way_side[1]
+        self._fitness_way_vector = GeneticAlgorithmParamsTest.list_fitness_way_vector[1]
+        self._fitness_way_kill_all_unwanted = GeneticAlgorithmParamsTest.list_fitness_way_kill_all_unwanted[1]
 
         self._web_layers = [self._dimension, self._dimension * self._out_data_for_one_dimension]
 
@@ -60,4 +60,4 @@ class GeneticAlgorithmParamsTest(GeneticAlgorithmParams):
     def get_fitness_way_distance(self): return self._fitness_way_distance
     def get_fitness_way_side(self): return self._fitness_way_side
     def get_fitness_way_vector(self): return self._fitness_way_vector
-    def get_fitness_way_vector_speed(self): return self._fitness_way_vector_speed
+    def get_fitness_way_kill_all_unwanted(self): return self._fitness_way_kill_all_unwanted

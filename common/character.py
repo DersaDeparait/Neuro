@@ -9,8 +9,8 @@ class Character:
     counter = 0
     characters_all = []
 
-    def __init__(self, person: Person=None, web=None) -> None:
-        self.person = person or Person()
+    def __init__(self, person: Person=None, web=None, default_position_range=None) -> None:
+        self.person = person or Person(default_position_range=default_position_range)
         self.web = web or Web(randomize_power=1)
         self.fitness = 0
         self.adaptive_params = None # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -82,4 +82,4 @@ class Character:
         for i in range(len(Character.characters_all)):
             Character.characters_all[i].web = web_new[i]
             Character.characters_all[i].fitness = 0
-            Character.characters_all[i].person.reset_position(position=[random.randint(100, 1100), random.randint(100, 1100)])
+            Character.characters_all[i].person.reset_position()
